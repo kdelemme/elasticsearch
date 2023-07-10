@@ -972,7 +972,11 @@ public class ReservedRolesStore implements BiConsumer<Set<String>, ActionListene
                 RoleDescriptor.IndicesPrivileges.builder()
                     .indices("logs-cloud_defend.*", "metrics-cloud_defend.*")
                     .privileges("read", "view_index_metadata")
-                    .build() },
+                    .build(),
+                // SLO observability solution internal indices
+                // Kibana system user uses them to read / write slo data.
+                RoleDescriptor.IndicesPrivileges.builder().indices(".slo-observability.*")
+                    .privileges("all").build(), },
             null,
             new ConfigurableClusterPrivilege[] {
                 new ManageApplicationPrivileges(Set.of("kibana-*")),
